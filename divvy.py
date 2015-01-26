@@ -1,13 +1,4 @@
-# Divvy Bikes
-#
-# Here's an example of how to retrieve the list of Divvy bike stations:
 
-
-##def distance(lat, long):
-##    x = ((lat - long)*(lat - long))
-##    y = ((-87.600915 - 41.793414)(-87.600915-41.793414))
-##    z = math.sqrt(x + y)
-##    print(z)
 
 import math
 import json
