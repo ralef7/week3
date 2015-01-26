@@ -1,120 +1,103 @@
-# Game of Blackjack
-
-# Simplified Rules (10 pts possible):
-# - Human player gets the first two cards
-# - Human player plays the rest of their hand
-# - Then computer gets next two cards
-# - Computer must take cards score  >= 17
-# - Computer must stand when score >= 17
-# - Aces always count as 11
-# - Human player loses if their score is > 21
-# - Computer loses if computer score is > 21
-# - Human player wins immediately if their score is exactly 21
-# - Computer wins immediately if their score is exactly 21
-# - If computer score is betwen 17 and 20, winner is determined by score
-# - If it's a tie, nobody wins.
-
-# Grading:
-# - 5 points for allowing a human user to play their complete hand
-# - 5 points for allowing the computer to play its hand
-
-# (Optional) Extras
-# [You don't get extra credit for these, but they're fun.]
-# - 1. Aces should count as 1 if counting as 11 would have made the score > 21
-# - 2. Initally, human and dealer both get two cards; one dealer card is face up
-# - 3. Allow the user to play as many games as they want
-# - 4. Dealing cards to the cmputer should have a dramatic, 4-second delay
-
-# Here's the psuedocode we wrote on the board in class:
-
-## Get a deck of cards
-
-## Shuffle the deck
-
-## Deal the first two cards to user
-
-## User can choose to take cards as long as score < 21
-
-## If user goes over 21, game is over.
-
-## If user reaches 21, game is over.
-
-## If user stands with less than 21, then it's the dealer's turn:
-
-##    Computer takes two cards
-##    Computer must take more cards while computer score < 17
-##    If computer score reached 21, computer wins.
-##    If computer score goes over 21, computer loses.
-##    If computer score is 17 to 20, winner is determined by higher score.
-
-
-
-
-
+#intro
 import random
 import time
 
-SUITS = "\u2663 \u2665 \u2666 \u2660".split()
-FACES = "A 2 3 4 5 6 7 8 9 10 J Q K".split()
+def intro():
+    print("Welcome to the Robert Alef blackjack game! Enjoy!\n")
+#deck
+suits = "h d c s".split()
+faces = "A 2 3 4 5 6 7 8 9 10 J Q K".split()
 
-deck = []
-for suit in SUITS:
-  for face in FACES:
-    deck.append(face+suit)
+cards=[]
+for suit in suits:
+    for face in faces:
+        cards.append(face+suit)
 
-random.shuffle(deck)
+#shuffle
+random.shuffle(cards)
 
-def calculate_score(cards):
-  value = 0
-  for card in cards:
-    face = card[:-1]
-    if face in ['J', 'Q', 'K']:
-      points = 10
-    elif face == 'A':
-      points = 11
+#How we score this
+def bj_score(x):
+    score = 0
+    for card in x:
+        face = card[:-1]
+        if face == "J":
+            value = 10
+        elif face == "Q":
+            value = 10
+        elif face == "K":
+            value = 10
+        elif face == "A":
+            value = 11               
+        else:
+            value = int(face)
+        score+= value
+
+    return score
+y = "true"
+while y:
+    intro()
+            #Player 1:
+
+    dealer_holding = [cards.pop(0)]
+    print("Dealer's face up card is {0}".format(dealer_holding))
+    time.sleep(2)
+    holding = [cards.pop(0), cards.pop(0)]
+    print("Your current hand is: {0}".format(holding))
+    count = bj_score(holding)
+
+
+    while count < 21 and input("Care to draw another card? y or n ") == "y":
+        holding.append (cards.pop(0))
+        count = bj_score(holding)
+        print("Now, your hand is: {0} and you have {1} points".format(holding, count))
+
+    if count > 21: 
+        print("Sorry, you have {0}. You have busted.".format(count))
+
+    elif count == 21:
+        print("BlackJack! You win!")
     else:
-      points = int(face)
-    value += points
-  return value
+        print("you have {0} points.\n".format(count))
 
-# Deal two cards
-hand = [deck.pop(0), deck.pop(0)]
-score = calculate_score(hand)
+#Dealer
+    
+    
+        dealer_holding.append(cards.pop(0))
+        dealer_count = bj_score(dealer_holding)
+        time.sleep(2)
+                        
+        print("The dealer turns over {0}".format(dealer_holding))
+        print("The dealer begins with {0} points.".format(dealer_count))
+        time.sleep(2)
+        while dealer_count < 17:
+            print("The dealer is required to draw another card.")
+            time.sleep(3)
+            dealer_holding.append(cards.pop(0))
+            dealer_count = bj_score(dealer_holding)
+            print("The dealer now has {0}".format(dealer_holding))
+            print("The dealer's new point total is {0}\n".format(dealer_count))
 
-print("Your hand:", " ".join(hand))
+        if dealer_count > 21:
+            print("The dealer busts! You're the winner!\n")
+        elif dealer_count == 21:
+            print("Shoot! The dealer drew 21. You lose.\n")
+        elif dealer_count == count:
+            print("Push.  Please take your bet back.\n")
+        elif dealer_count > count:
+            print("Shoot. The dealer wins.\n")
+        else:
+            print("You win!\n")
+    x = input("Play again (y / n)? ")
+    if x == "y":
+       y = "true"
+    if x == "n":
+        break
 
-while score < 21 and input("Do you want another card? (y/n) ") == 'y':
-  hand.append(deck.pop(0))
-  score = calculate_score(hand)
-  print("Your hand:", ", ".join(hand))
+    
 
-if score > 21:
-  print("You're busted!")
-elif score == 21:
-  print("You win!")
-else:
-  print("You have %s points." % score)
-  print()
-  dealer_hand = [deck.pop(0), deck.pop(0)]
-  dealer_score = calculate_score(dealer_hand)
-  print("Dealer has", " ".join(dealer_hand))
-  while dealer_score < 17:
-    print("The dealer will take another card...")
-    time.sleep(5)
-    dealer_hand.append(deck.pop(0))
-    dealer_score = calculate_score(dealer_hand)
-    print("Dealer now has", " ".join(dealer_hand))
-    time.sleep(3)
+    
+          
+          
 
-  if dealer_score > 21:
-    print("The dealer busted! You win!")
-  elif dealer_score == 21:
-    print("The dealer got 21! You lose.")
-  elif dealer_score > score:
-    print("You lost.")
-  elif dealer_score == score:
-    print("It's a tie.... nobody wins this time.")
-  else:
-    print("You win!")
-
-
+            

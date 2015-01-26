@@ -2,20 +2,51 @@
 #
 # Here's an example of how to retrieve the list of Divvy bike stations:
 
+
+##def distance(lat, long):
+##    x = ((lat - long)*(lat - long))
+##    y = ((-87.600915 - 41.793414)(-87.600915-41.793414))
+##    z = math.sqrt(x + y)
+##    print(z)
+
+import math
 import json
 from urllib.request import urlopen
+
 
 webservice_url = "http://www.divvybikes.com/stations/json"
 data = urlopen(webservice_url).read().decode("utf8")
 result = json.loads(data)
+min_distance = (float("inf"))
+
 stations = result['stationBeanList']
-print(stations)
+x = len(stations) 
 
-# The Young building has the following latitude and longitude: 41.793414,-87.600915.
-# To measure surface distance, you can treat latitudes and longitudes like x and y coordinates, and calculate distance between locations with the usual Euclidean distance formula.
+for i in range(x):  
+    if len(result):
+        latitude = result['stationBeanList'][i]['latitude']
+        longitude = result['stationBeanList'][i]['longitude']
+        stations = result['stationBeanList'][i]['stationName']
+        bikes = result['stationBeanList'][i]['availableBikes']
+        station_distance_euclid = ((longitude - latitude)*(longitude - latitude))
+        static_distance_euclid = ((-87.600915 - 41.793414)*(-87.600915 - 41.793414))
+        distance= math.sqrt(station_distance_euclid + static_distance_euclid)
+        
+    if distance < min_distance: 
+        min_distance = distance
+        min_station = stations
+        min_bikes = bikes
+print("The nearest station is: {0} and it currently has {1} bikes available".format(min_station, min_bikes))
+            
+    
+        
+    
 
-# 1. Modify the code above to display the station name and number of available bikes for the station closest to Young.
-
-# You will likely want to consult the JSON stream from Divvy
-
-# - http://www.divvybikes.com/stations/json
+    
+    
+ 
+    
+    
+            
+    
+    
