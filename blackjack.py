@@ -88,10 +88,10 @@ while y:
             print("Shoot. The dealer wins.\n")
         else:
             print("You win!\n")
-    x = input("Play again (y / n)? ")
-    if x == "y":
+    j = input("Play again (y / n)? ")
+    if j == "y":
        y = "true"
-    if x == "n":
+    if j == "n":
         break
 
     
