@@ -19,9 +19,10 @@ for i in range(x):
         longitude = result['stationBeanList'][i]['longitude']
         stations = result['stationBeanList'][i]['stationName']
         bikes = result['stationBeanList'][i]['availableBikes']
-        station_distance_euclid = ((longitude - latitude)*(longitude - latitude))
-        static_distance_euclid = ((-87.600915 - 41.793414)*(-87.600915 - 41.793414))
+        station_distance_euclid = ((longitude + 87.600915)*(longitude + 87.600915))
+        static_distance_euclid = ((latitude - 41.793414)*(latitude-41.793414))
         distance= math.sqrt(station_distance_euclid + static_distance_euclid)
+        
         
     if distance < min_distance: 
         min_distance = distance
