@@ -39,10 +39,10 @@ while y:
     intro()
             #Player 1:
 
-    dealer_holding = [cards.pop(0)]
+    dealer_holding = [(cards.pop(0))]
     print("Dealer's face up card is {0}".format(dealer_holding))
     time.sleep(2)
-    holding = [cards.pop(0), cards.pop(0)]
+    holding = [(cards.pop(0)), (cards.pop(0))]
     print("Your current hand is: {0}".format(holding))
     count = bj_score(holding)
 
@@ -77,6 +77,7 @@ while y:
             dealer_count = bj_score(dealer_holding)
             print("The dealer now has {0}".format(dealer_holding))
             print("The dealer's new point total is {0}\n".format(dealer_count))
+            time.sleep(2)
 
         if dealer_count > 21:
             print("The dealer busts! You're the winner!\n")
